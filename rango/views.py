@@ -4,9 +4,8 @@ from rango.models import Category
 from rango.models import Page
 from rango.forms import CategoryForm
 from django.shortcuts import redirect
-from django.urls import reverse
 from rango.forms import PageForm
-
+from django.urls import reverse
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -42,7 +41,7 @@ def add_category(request):
 
         if form.is_valid():
             form.save(commit=True)
-            return redirect("/rango/")
+            return redirect(reverse("rango:index"))
         else:
             print(form.errors)
     return render(request, 'rango/add_category.html', {'form': form})
@@ -54,7 +53,7 @@ def add_page(request, category_name_slug):
         category = None
     
     if category is None:
-        return redirect('/rango/')
+        return redirect(reverse("rango:index"))
 
     form = PageForm()
 
